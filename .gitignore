@@ -1,0 +1,12 @@
+.pytest_cache/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.playwright/
+playwright-report/
+test-results/
+error_bhr_popup.png
+
