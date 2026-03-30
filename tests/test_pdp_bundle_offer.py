@@ -11,8 +11,11 @@ logger = logging.getLogger(__name__)
 # Parametryzacja testu dla 3 różnych stron PDP (tu można dodawać kolejne URL-e).
 PRODUCT_URLS = [
     "https://idream.pl/iphone/apple-iphone-15/apple-iphone-15-128gb-niebieski.html",
-    "https://idrim.ovh/iphone/apple-iphone-15/apple-iphone-15-128gb-niebieski.html",
+    "https://idream.pl/iphone/apple-iphone-15/apple-iphone-15-128gb-niebieski.html",
     "https://idream.pl/ipad/ipad-air/apple-ipad-air-13-m2-128gb-wi-fi-cellular-6.gen-gwiezdna-szarosc-2024.html",
+    "https://idream.pl/apple-watch/apple-watch-ultra-2/apple-watch-ultra-2-gps-cellular-49mm-tytan-naturalny-z-bransoleta-mediolanska-w-kolorze-naturalnym-s.html",
+    "https://idream.pl/iphone/apple-iphone-16/apple-iphone-16-128gb-bialy.html",
+    "https://idream.pl/ipad/ipad-air/apple-ipad-air-11-m3-256gb-wi-fi-7-gen-gwiezdna-szarosc-2025.html",
 ]
 
 
