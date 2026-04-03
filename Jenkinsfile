@@ -22,18 +22,21 @@ pipeline {
     stage('Run tests') {
       steps {
         sh '''
-          python3 -m pytest -q "${TEST_FILE}"
+          python3 -m pytest -q "${TEST_FILE}" --junitxml=results.xml
         '''
       }
     }
   }
 
   post {
+    always {
+      junit allowEmptyResults: true, testResults: 'results.xml'
+    }
     failure {
       emailext(
         to: "${RECIPIENTS}",
-        subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-        body: "Testy nie przeszły.\n\nBuild: ${env.BUILD_URL}\n\nSprawdź logi w konsoli Jenkins."
+        subject: "BŁĄD ZESTAWÓW: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        body: "Wykryto brak widocznej sekcji zestawów na następujących stronach PDP:\n\n${FAILED_TESTS, showStack=\\"false\\", showMessage=\\"false\\"}\n\nSprawdź więcej szczegółów na stronie: ${env.BUILD_URL}"
       )
     }
   }
