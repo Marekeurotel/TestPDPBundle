@@ -10,3 +10,5 @@ playwright-report/
 test-results/
 error_bhr_popup.png
 
+.pdp_bundle_button_counts_state*.json
+
