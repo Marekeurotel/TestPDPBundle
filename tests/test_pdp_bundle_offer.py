@@ -25,6 +25,20 @@ STATE_ENV_VAR = "PDP_BUNDLE_BUTTON_COUNT_STATE_PATH"
 DEFAULT_STATE_PATH = Path(__file__).resolve().parent / ".pdp_bundle_button_counts_state.json"
 
 
+def _expect_visible_with_url(locator, *, url: str, description: str, timeout: int) -> None:
+    try:
+        expect(locator).to_be_visible(timeout=timeout)
+    except Exception as e:
+        raise AssertionError(f"{description}. URL: {url}. Szczegóły: {e}") from e
+
+
+def _expect_enabled_with_url(locator, *, url: str, description: str, timeout: int) -> None:
+    try:
+        expect(locator).to_be_enabled(timeout=timeout)
+    except Exception as e:
+        raise AssertionError(f"{description}. URL: {url}. Szczegóły: {e}") from e
+
+
 def _load_button_counts(state_path: Path) -> dict[str, int]:
     if not state_path.exists():
         return {}
@@ -97,7 +111,12 @@ def test_pdp_bundle_buttons_presence_and_regression(page: Page):
         )
 
         # 5) Asercje: sekcja zestawu + przyciski
-        expect(bundle_box_locator).to_be_visible(timeout=10000)
+        _expect_visible_with_url(
+            bundle_box_locator,
+            url=product_url,
+            description="Brak widocznej sekcji zestawów (div.ab__bt_box)",
+            timeout=10000,
+        )
         bundle_box_locator.scroll_into_view_if_needed()
 
         current_count = bundle_buttons_locator.count()
@@ -116,8 +135,18 @@ def test_pdp_bundle_buttons_presence_and_regression(page: Page):
 
         # Dodatkowe sprawdzenie, że przynajmniej jeden przycisk jest dostępny i ma poprawny tekst.
         # (To nie wymusza >1 na każdej stronie, tylko gwarantuje sensowność selektora.)
-        expect(bundle_buttons_locator.first).to_be_visible(timeout=5000)
-        expect(bundle_buttons_locator.first).to_be_enabled(timeout=5000)
+        _expect_visible_with_url(
+            bundle_buttons_locator.first,
+            url=product_url,
+            description="Przycisk 'Dodaj zestaw do koszyka' nie jest widoczny",
+            timeout=5000,
+        )
+        _expect_enabled_with_url(
+            bundle_buttons_locator.first,
+            url=product_url,
+            description="Przycisk 'Dodaj zestaw do koszyka' nie jest aktywny",
+            timeout=5000,
+        )
         expect(bundle_buttons_locator.first).to_contain_text(BUTTON_TEXT)
 
         current_counts[product_url] = current_count
