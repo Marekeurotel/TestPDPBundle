@@ -39,6 +39,32 @@ def _expect_enabled_with_url(locator, *, url: str, description: str, timeout: in
         raise AssertionError(f"{description}. URL: {url}. Szczegóły: {e}") from e
 
 
+def _wait_for_pdp_ready(page: Page, *, url: str, timeout: int = 30000) -> None:
+    """
+    Bezpieczny wait dla PDP:
+    - nie używa networkidle (ciągły ruch w tle potrafi blokować test),
+    - czeka na interaktywny dokument i realny kontener bundle.
+    """
+    try:
+        page.wait_for_load_state("domcontentloaded", timeout=timeout)
+    except Exception:
+        # Fallback, gdy dokument jest niestabilny po popupach/przekierowaniach.
+        page.wait_for_load_state("load", timeout=timeout)
+
+    _expect_visible_with_url(
+        page.locator("body"),
+        url=url,
+        description="Strona nie jest gotowa (body niewidoczne)",
+        timeout=10000,
+    )
+    _expect_visible_with_url(
+        page.locator("div.ab__bt_box").first,
+        url=url,
+        description="Brak widocznej sekcji zestawów po załadowaniu strony",
+        timeout=15000,
+    )
+
+
 def _load_button_counts(state_path: Path) -> dict[str, int]:
     if not state_path.exists():
         return {}
@@ -94,8 +120,8 @@ def test_pdp_bundle_buttons_presence_and_regression(page: Page):
         # 1) Nawigacja + popupy
         product_page.open_specific_product_and_handle_popups(product_url)
 
-        # 2) Upewniamy się, że strona jest załadowana
-        page.wait_for_load_state("networkidle", timeout=30000)
+        # 2) Bezpieczne oczekiwanie na gotowość PDP bez networkidle.
+        _wait_for_pdp_ready(page, url=product_url)
 
         # 3) Scroll aby aktywować lazy-loading dla niższych sekcji
         # Różne PDP mogą mieć przyciski na różnych pozycjach, więc przewijamy w kilku krokach.
