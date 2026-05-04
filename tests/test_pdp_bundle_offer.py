@@ -17,7 +17,7 @@ PRODUCT_URLS = [
     "https://idream.pl/ipad/ipad-air/apple-ipad-air-13-m2-128gb-wi-fi-cellular-6.gen-gwiezdna-szarosc-2024.html",
     "https://idream.pl/apple-watch/apple-watch-ultra-2/apple-watch-ultra-2-gps-cellular-49mm-tytan-naturalny-z-bransoleta-mediolanska-w-kolorze-naturalnym-s.html",
     "https://idream.pl/iphone/apple-iphone-16/apple-iphone-16-128gb-bialy.html",
-    "https://idream.pl/ipad/ipad-air/apple-ipad-air-11-m3-256gb-wi-fi-7-gen-gwiezdna-szarosc-2025.html",
+    "https://idream.pl/ipad/ipad-air/apple-ipad-air-11-m3-128gb-wi-fi-cellular-7-gen-gwiezdna-szarosc-2025.html",
 ]
 
 BUTTON_TEXT = "Dodaj zestaw do koszyka"
